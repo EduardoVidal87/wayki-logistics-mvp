@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-// Usa tu dominio EXACTO de Vercel:
-const API = "https://wayki-logistics-mvp.vercel.app";
+// 👇 Pon aquí tu dominio de Vercel
+const API_BASE = "https://wayki-logistics-mvp.vercel.app";
 
 export default function App() {
   const [status, setStatus] = useState("(sin probar)");
@@ -9,7 +9,7 @@ export default function App() {
 
   async function probarAPI() {
     try {
-      const r = await fetch(`${API}/api/health`);
+      const r = await fetch(`${API_BASE}/api/health`);
       setStatus(JSON.stringify(await r.json()));
     } catch {
       setStatus("No se pudo conectar a la API");
@@ -24,12 +24,12 @@ export default function App() {
         destino_id: "LOC-18",
         peso_kg: 1200,
         volumen_m3: 6.5,
-        pallets: 5
+        pallets: 5,
       };
-      const r = await fetch(`${API}/api/orders`, {
+      const r = await fetch(`${API_BASE}/api/orders`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
       });
       const data = await r.json();
       setOrderId(data.id || "(sin id)");
@@ -40,12 +40,13 @@ export default function App() {
 
   async function verOrden() {
     if (!orderId) return;
-    const r = await fetch(`${API}/api/orders?id=${orderId}`);
-    alert(JSON.stringify(await r.json(), null, 2));
+    const r = await fetch(`${API_BASE}/api/orders?id=${orderId}`);
+    const data = await r.json();
+    alert(JSON.stringify(data, null, 2));
   }
 
   return (
-    <div style={{ padding: 24, fontFamily: "sans-serif", maxWidth: 800 }}>
+    <div style={{ padding: 24, fontFamily: "system-ui, sans-serif", maxWidth: 900 }}>
       <h1>Wayki Logistics</h1>
       <p>Web en GitHub Pages + API en Vercel</p>
 
