@@ -55,4 +55,10 @@ export default function App() {
       <p>Respuesta: {status}</p>
 
       <h3>2) Crear orden</h3>
-      <button onClick={crearOrden
+      <button onClick={crearOrdenDemo}>Crear orden demo</button>
+      <p>ID de orden: {orderId}</p>
+
+      <button disabled={!orderId} onClick={verOrden}>Ver orden</button>
+    </div>
+  );
+}
