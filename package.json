@@ -1,0 +1,13 @@
+{
+  "name": "wayki-logistics-mvp",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "@vercel/kv": "^1.0.1"
+  },
+  "devDependencies": {
+    "@vercel/node": "^3.0.20",
+    "typescript": "^5.4.5"
+  }
+}
