@@ -1,13 +1,6 @@
-// api/orders.ts
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { withCORS } from './_cors'
-import { createClient } from '@vercel/kv'
-
-// cliente KV
-const kv = createClient({
-  url: process.env.KV_REST_API_URL!,
-  token: process.env.KV_REST_API_TOKEN!,
-})
+import { kv } from '@vercel/kv'
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   withCORS(res)
@@ -19,9 +12,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'Faltan campos' })
     }
     const id = crypto.randomUUID()
-    const orden = { id, estado: 'CREADO', cliente_id, origen_id, destino_id, peso_kg, volumen_m3, pallets }
-    await kv.hset(`order:${id}`, orden)         // guarda como hash
-    await kv.lpush('orders', id)                 // índice simple
+    const orden = { id, estado: 'CREADO', cliente_id, origen_id, destino_id, peso_kg, volumen_m3, pallets, created_at: Date.now() }
+
+    await kv.hset(`order:${id}`, orden) // guarda orden
+    await kv.lpush('orders', id)        // índice simple
+
     return res.status(201).json({ id, estado: 'CREADO' })
   }
 
@@ -36,3 +31,4 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Allow', 'GET, POST, OPTIONS')
   return res.status(405).end('Method Not Allowed')
 }
+
