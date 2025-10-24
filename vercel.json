@@ -2,8 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
     "api/**/*.ts": {
-      "runtime": "nodejs20.x",
-      "regions": ["gru1"]
+      "runtime": "nodejs20.x"
     }
   }
 }
