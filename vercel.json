@@ -1,7 +1,9 @@
 {
+  "version": 2,
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "regions": ["gru1"],             // opcional, puedes dejarlo si quieres fijar región
   "functions": {
-    "api/**/*.ts": {
+    "api/**/*.{ts,js}": {
       "runtime": "nodejs20.x"
     }
   }
