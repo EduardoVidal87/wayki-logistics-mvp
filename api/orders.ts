@@ -1,11 +1,15 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { withCORS } from './_cors';
 
-// ⚠️ Memoria efímera (sirve para demo). Para persistir: Vercel KV o Supabase.
+// ⚠️ Memoria efímera: se borra al re-deploy. Para guardar de verdad: Vercel KV o Supabase.
 const ORDERS: Record<string, any> = {};
 
 export default function handler(req: VercelRequest, res: VercelResponse) {
+  withCORS(res);
+  if (req.method === 'OPTIONS') return res.status(200).end();   // preflight
+
   if (req.method === 'POST') {
-    const { cliente_id, origen_id, destino_id, peso_kg, volumen_m3, pallets } = req.body || {};
+    const { cliente_id, origen_id, destino_id, peso_kg, volumen_m3, pallets } = (req.body || {});
     if (!cliente_id || !origen_id || !destino_id) {
       return res.status(400).json({ error: 'Faltan campos' });
     }
@@ -22,6 +26,6 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(200).json(o);
   }
 
-  res.setHeader('Allow', 'GET, POST');
+  res.setHeader('Allow', 'GET, POST, OPTIONS');
   return res.status(405).end('Method Not Allowed');
 }
